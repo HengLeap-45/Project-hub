@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Project — ProjectHub</title>
+<link href="./dist/output.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <div id="navShell" class="mx-3 mt-3 sm:mx-6 sm:mt-4 rounded-2xl transition-all duration-300 border border-slate-200/70 dark:border-white/10 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-lg shadow-slate-900/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="modern-website.html" class="flex items-center gap-2.5 cursor-pointer group flex-shrink-0">
+        <img src="./assets/logo.jpg" alt="ProjectHub Logo" class="w-10 h-10 rounded-xl object-cover shadow-lg shadow-violet-500/30 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300">
+        <span class="hidden sm:inline font-extrabold text-lg tracking-tight">ProjectHub</span>
+      </a>
+
+      <!-- Right actions -->
+      <div class="flex items-center gap-1.5 ml-auto">
+        <button onclick="toggleTheme()" class="hidden sm:flex relative w-10 h-10 items-center justify-center rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-colors overflow-hidden">
+          <svg id="iconSun" class="w-5 h-5 absolute transition-all duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg id="iconMoon" class="w-5 h-5 absolute transition-all duration-500 opacity-0 scale-50 -rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
+        </button>
+
+        <div id="profileTrigger" class="relative block">
+          <button onclick="togglePanel('profilePanel')" class="flex items-center gap-2 pl-1 pr-2 py-1 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-fuchsia-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-fuchsia-500/20">JD</div>
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="profilePanel" class="hidden absolute right-0 top-full mt-3 w-52 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl z-50 p-2">
+            <a href="profile.html" class="block px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">My Profile</a>
+            <a href="my-projects.html" class="block px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">My Projects</a>
+            <a href="settings.html" class="block px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">Settings</a>
+            <hr class="my-1.5 border-slate-100 dark:border-slate-800">
+            <a href="modern-website.html" class="block w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ CREATE PROJECT ============ -->
+<section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 min-h-screen relative">
+  <div class="absolute inset-0 bg-gradient-to-tr from-fuchsia-100/50 via-white to-blue-100/50 dark:from-fuchsia-900/10 dark:via-slate-950 dark:to-blue-900/10 -z-10"></div>
+  
+  <div class="max-w-3xl mx-auto reveal show">
+    
+    <div class="flex items-center gap-3 mb-8">
+      <a href="my-projects.html" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </a>
+      <div>
+        <h1 class="text-3xl font-extrabold">Create New Project</h1>
+        <p class="text-slate-500 dark:text-slate-400">Share your latest creation with the community.</p>
+      </div>
+    </div>
+
+    <form class="space-y-8">
+      <!-- Main Details -->
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/20 dark:shadow-black/20">
+        
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Project Title <span class="text-rose-500">*</span></label>
+            <input type="text" placeholder="e.g., E-commerce Dashboard" class="w-full px-5 py-4 rounded-xl text-lg bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-400/50 font-bold transition-all">
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Cover Image</label>
+            <div class="w-full h-48 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 hover:border-violet-400 transition-all cursor-pointer group">
+              <div class="w-12 h-12 rounded-xl bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              </div>
+              <p class="font-bold text-sm">Click to upload or drag and drop</p>
+              <p class="text-xs text-slate-500 mt-1">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Description <span class="text-rose-500">*</span></label>
+            <textarea rows="5" placeholder="Tell us what your project does, how you built it, and what you learned..." class="w-full px-5 py-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-400/50 font-medium transition-all resize-none"></textarea>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tech & Links -->
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/20 dark:shadow-black/20">
+        <h3 class="text-xl font-bold mb-6">Links & Technologies</h3>
+        
+        <div class="space-y-6">
+          <div>
+            <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Technologies Used</label>
+            <div class="relative">
+              <input type="text" placeholder="Type and press enter (e.g., React, Tailwind)" class="w-full px-5 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-400/50 font-medium transition-all">
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3">
+              <span class="px-3 py-1.5 rounded-lg text-sm font-bold bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300 flex items-center gap-2">React <button class="hover:text-blue-900">&times;</button></span>
+              <span class="px-3 py-1.5 rounded-lg text-sm font-bold bg-cyan-100 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300 flex items-center gap-2">TailwindCSS <button class="hover:text-cyan-900">&times;</button></span>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">Live Demo URL</label>
+              <input type="url" placeholder="https://" class="w-full px-5 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-400/50 font-medium transition-all">
+            </div>
+            <div>
+              <label class="block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300">GitHub Repository</label>
+              <input type="url" placeholder="https://github.com/..." class="w-full px-5 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-400/50 font-medium transition-all">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-end gap-4 pb-10">
+        <button type="button" class="px-8 py-4 rounded-xl font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">Save as Draft</button>
+        <button type="button" class="px-8 py-4 rounded-xl text-white font-extrabold bg-gradient-to-r from-fuchsia-500 via-violet-600 to-blue-600 shadow-xl shadow-violet-500/30 hover:shadow-2xl hover:shadow-violet-500/40 hover:-translate-y-1 transition-all">Publish Project 🚀</button>
+      </div>
+      
+    </form>
+  </div>
+</section>
+
+<script src="./src/script.js"></script>
+</body>
+</html>
