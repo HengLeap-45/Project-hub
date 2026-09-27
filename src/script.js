@@ -1,19 +1,38 @@
 const projects=[
- {title:"E-commerce Platform",description:"Modern e-commerce with real-time updates",image:"./assets/project_ecommerce.jpg",category:"web",technologies:["React","Node.js"],author:"Alex Johnson"},
- {title:"AI Chat Assistant",description:"Advanced conversational AI",image:"./assets/project_ai.jpg",category:"python",technologies:["Python","TensorFlow"],author:"Sarah Chen"},
- {title:"Design System",description:"Complete UI component library",image:"./assets/project_design.jpg",category:"web",technologies:["Figma","CSS"],author:"Marcus Design"},
- {title:"Mobile App",description:"Cross-platform fitness tracker",image:"./assets/project_thumbnail.jpg",category:"javascript",technologies:["React Native","Firebase"],author:"Emma Davis"},
- {title:"Data Analytics",description:"Visualization and analytics tool",image:"./assets/project_thumbnail.jpg",category:"python",technologies:["Python","Pandas"],author:"James Wilson"},
- {title:"API Server",description:"RESTful API with authentication",image:"./assets/project_thumbnail.jpg",category:"web",technologies:["Node.js","MongoDB"],author:"Lisa Anderson"},
+ {id:0,title:"E-commerce Platform",description:"Modern e-commerce with real-time updates",image:"./assets/project_ecommerce.jpg",category:"web",technologies:["React","Node.js"],author:"Alex Johnson"},
+ {id:1,title:"AI Chat Assistant",description:"Advanced conversational AI",image:"./assets/project_ai.jpg",category:"python",technologies:["Python","TensorFlow"],author:"Sarah Chen"},
+ {id:2,title:"Design System",description:"Complete UI component library",image:"./assets/project_design.jpg",category:"web",technologies:["Figma","CSS"],author:"Marcus Design"},
+ {id:3,title:"Mobile App",description:"Cross-platform fitness tracker",image:"./assets/project_thumbnail.jpg",category:"javascript",technologies:["React Native","Firebase"],author:"Emma Davis"},
+ {id:4,title:"Data Analytics",description:"Visualization and analytics tool",image:"./assets/project_thumbnail.jpg",category:"python",technologies:["Python","Pandas"],author:"James Wilson"},
+ {id:5,title:"API Server",description:"RESTful API with authentication",image:"./assets/project_thumbnail.jpg",category:"web",technologies:["Node.js","MongoDB"],author:"Lisa Anderson"},
 ];
 const tagColors=['bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-500/15 dark:text-fuchsia-300','bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300','bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300','bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300'];
+
+function getAllProjects(){
+  // Combine default projects with user-created projects from localStorage
+  const userProjects=JSON.parse(localStorage.getItem('userProjects')||'[]');
+  const userProjectsMapped=userProjects
+    .filter(p=>p.status==='Published')
+    .map(p=>({
+      ...p,
+      // Use the stored image (could be data URL or relative path)
+      image: p.image && p.image.startsWith('data:') ? p.image : (p.image || './assets/project_thumbnail.jpg'),
+      isUserProject: true
+    }));
+  return [...userProjectsMapped, ...projects];
+}
 
 function renderProjects(filter,search){
   const c=document.getElementById('projects-container');
   if(!c) return;
-  let f=projects.filter(p=>filter==='all'||p.category===filter);
+  const allProjects=getAllProjects();
+  let f=allProjects.filter(p=>filter==='all'||p.category===filter);
   if(search) f=f.filter(p=>p.title.toLowerCase().includes(search.toLowerCase()));
-  c.innerHTML=f.map((p,i)=>`
+  c.innerHTML=f.map((p,i)=>{
+    const detailUrl=p.isUserProject
+      ? `html/project-detail.html?id=${p.id}&source=user`
+      : `html/project-detail.html?id=${p.id}`;
+    return `
     <div class="rounded-2xl overflow-hidden bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all">
       <div class="h-44 flex items-center justify-center overflow-hidden"><img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"></div>
       <div class="p-6">
@@ -22,10 +41,11 @@ function renderProjects(filter,search){
         <div class="flex gap-2 mb-4 flex-wrap">${p.technologies.map((t,j)=>`<span class="px-2.5 py-1 rounded-lg text-xs font-bold ${tagColors[(i+j)%tagColors.length]}">${t}</span>`).join('')}</div>
         <div class="flex justify-between items-center">
           <span class="text-sm text-slate-500">${p.author}</span>
-          <button class="px-4 py-2 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-fuchsia-500 to-blue-600">View</button>
+          <a href="${detailUrl}" class="px-4 py-2 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-fuchsia-500 to-blue-600 hover:shadow-lg hover:-translate-y-0.5 transition-all inline-block">View</a>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 renderProjects('all','');
 
