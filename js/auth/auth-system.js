@@ -4,8 +4,8 @@
  */
 
 const AuthSystem = {
-  users: JSON.parse(localStorage.getItem('authhub_users')) || [],
-  currentUser: JSON.parse(localStorage.getItem('authhub_currentUser')) || null,
+  users: JSON.parse(localStorage.getItem("authhub_users")) || [],
+  currentUser: JSON.parse(localStorage.getItem("authhub_currentUser")) || null,
 
   /**
    * Add a new user to the system
@@ -26,7 +26,7 @@ const AuthSystem = {
    */
   findUser(identifier) {
     return this.users.find(
-      (u) => u.email === identifier || u.username === identifier
+      (u) => u.email === identifier || u.username === identifier,
     );
   },
 
@@ -42,7 +42,10 @@ const AuthSystem = {
         username: user.username,
         email: user.email,
       };
-      localStorage.setItem('authhub_currentUser', JSON.stringify(this.currentUser));
+      localStorage.setItem(
+        "authhub_currentUser",
+        JSON.stringify(this.currentUser),
+      );
       return true;
     }
     return false;
@@ -53,7 +56,7 @@ const AuthSystem = {
    */
   logout() {
     this.currentUser = null;
-    localStorage.removeItem('authhub_currentUser');
+    localStorage.removeItem("authhub_currentUser");
   },
 
   /**
@@ -79,7 +82,10 @@ const AuthSystem = {
           email: updates.email || this.currentUser.email,
           username: updates.username || this.currentUser.username,
         });
-        localStorage.setItem('authhub_currentUser', JSON.stringify(this.currentUser));
+        localStorage.setItem(
+          "authhub_currentUser",
+          JSON.stringify(this.currentUser),
+        );
       }
       return user;
     }
@@ -90,7 +96,7 @@ const AuthSystem = {
    * Save users to localStorage
    */
   save() {
-    localStorage.setItem('authhub_users', JSON.stringify(this.users));
+    localStorage.setItem("authhub_users", JSON.stringify(this.users));
   },
 
   /**
@@ -146,9 +152,9 @@ const Validation = {
     if (/[0-9]/.test(password)) strength++;
     if (/[^A-Za-z0-9]/.test(password)) strength++;
 
-    if (strength <= 1) return 'weak';
-    if (strength <= 3) return 'medium';
-    return 'strong';
+    if (strength <= 1) return "weak";
+    if (strength <= 3) return "medium";
+    return "strong";
   },
 
   /**

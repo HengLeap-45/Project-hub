@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+const fs = require("fs");
+const path = require("path");
+const { execSync } = require("child_process");
 
-const deployDir = path.join(__dirname, 'deploy');
+const deployDir = path.join(__dirname, "deploy");
 
 // Clean and create deploy directory
 if (fs.existsSync(deployDir)) {
@@ -10,11 +10,13 @@ if (fs.existsSync(deployDir)) {
 }
 fs.mkdirSync(deployDir);
 
-console.log('Building minified CSS for production...');
+console.log("Building minified CSS for production...");
 try {
-  execSync('npx tailwindcss -i ./src/style.css -o ./dist/output.css --minify', { stdio: 'inherit' });
+  execSync("npx tailwindcss -i ./src/style.css -o ./dist/output.css --minify", {
+    stdio: "inherit",
+  });
 } catch (e) {
-  console.error('Failed to build CSS', e);
+  console.error("Failed to build CSS", e);
   process.exit(1);
 }
 
@@ -37,28 +39,31 @@ function copyDirSync(src, dest) {
   }
 }
 
-console.log('Copying files to deploy folder...');
+console.log("Copying files to deploy folder...");
 
 // Copy HTML files
 const files = fs.readdirSync(__dirname);
-files.forEach(file => {
-  if (file.endsWith('.html')) {
+files.forEach((file) => {
+  if (file.endsWith(".html")) {
     fs.copyFileSync(path.join(__dirname, file), path.join(deployDir, file));
   }
 });
 
 // Copy required directories
-const dirsToCopy = ['assets', 'dist'];
-dirsToCopy.forEach(dir => {
+const dirsToCopy = ["assets", "dist"];
+dirsToCopy.forEach((dir) => {
   if (fs.existsSync(path.join(__dirname, dir))) {
     copyDirSync(path.join(__dirname, dir), path.join(deployDir, dir));
   }
 });
 
 // Copy specific src files (just script.js)
-fs.mkdirSync(path.join(deployDir, 'src'));
-if (fs.existsSync(path.join(__dirname, 'src', 'script.js'))) {
-  fs.copyFileSync(path.join(__dirname, 'src', 'script.js'), path.join(deployDir, 'src', 'script.js'));
+fs.mkdirSync(path.join(deployDir, "src"));
+if (fs.existsSync(path.join(__dirname, "src", "script.js"))) {
+  fs.copyFileSync(
+    path.join(__dirname, "src", "script.js"),
+    path.join(deployDir, "src", "script.js"),
+  );
 }
 
-console.log('✅ Deployment folder prepared successfully at /deploy!');
+console.log("✅ Deployment folder prepared successfully at /deploy!");

@@ -1,526 +1,1116 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project Detail — ProjectHub</title>
-<meta name="description" content="View detailed project information, technologies, and author details on ProjectHub.">
-<link href="../dist/output.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  html { scroll-behavior: smooth; }
-  body { font-family: 'Inter', sans-serif; }
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-thumb { border-radius: 9999px; }
-  .reveal-detail { opacity: 0; transform: translateY(20px); animation: revealUp .6s ease-out forwards; }
-  @keyframes revealUp { to { opacity: 1; transform: translateY(0); } }
-  .delay-1 { animation-delay: .1s; }
-  .delay-2 { animation-delay: .2s; }
-  .delay-3 { animation-delay: .3s; }
-  .delay-4 { animation-delay: .4s; }
-  .hero-shimmer { position: relative; overflow: hidden; }
-  .hero-shimmer::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
-    background-size: 200% 200%;
-    animation: shimmer 3s ease-in-out infinite;
-  }
-  @keyframes shimmer { 0%,100% { background-position: 200% 200%; } 50% { background-position: 0% 0%; } }
-  .like-btn.liked svg { fill: #f43f5e; color: #f43f5e; }
-</style>
-</head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Detail — ProjectHub</title>
+    <meta
+      name="description"
+      content="View detailed project information, technologies, and author details on ProjectHub."
+    />
+    <link href="../dist/output.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-thumb {
+        border-radius: 9999px;
+      }
+      .reveal-detail {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: revealUp 0.6s ease-out forwards;
+      }
+      @keyframes revealUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .delay-1 {
+        animation-delay: 0.1s;
+      }
+      .delay-2 {
+        animation-delay: 0.2s;
+      }
+      .delay-3 {
+        animation-delay: 0.3s;
+      }
+      .delay-4 {
+        animation-delay: 0.4s;
+      }
+      .hero-shimmer {
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-shimmer::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          transparent 40%,
+          rgba(255, 255, 255, 0.08) 50%,
+          transparent 60%
+        );
+        background-size: 200% 200%;
+        animation: shimmer 3s ease-in-out infinite;
+      }
+      @keyframes shimmer {
+        0%,
+        100% {
+          background-position: 200% 200%;
+        }
+        50% {
+          background-position: 0% 0%;
+        }
+      }
+      .like-btn.liked svg {
+        fill: #f43f5e;
+        color: #f43f5e;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300"
+  >
+    <!-- ============ NAVBAR ============ -->
+    <nav
+      id="navbar"
+      class="fixed top-0 inset-x-0 z-50 transition-all duration-300"
+    >
+      <div
+        id="navShell"
+        class="mx-3 mt-3 sm:mx-6 sm:mt-4 rounded-2xl transition-all duration-300 border border-slate-200/70 dark:border-white/10 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-lg shadow-slate-900/5"
+      >
+        <div
+          class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4"
+        >
+          <a
+            href="../index.html"
+            class="flex items-center gap-2.5 cursor-pointer group flex-shrink-0"
+          >
+            <img
+              src="../assets/logo.jpg"
+              alt="ProjectHub Logo"
+              class="w-10 h-10 rounded-xl object-cover shadow-lg shadow-violet-500/30 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300"
+            />
+            <span class="hidden sm:inline font-extrabold text-lg tracking-tight"
+              >ProjectHub</span
+            >
+          </a>
 
-<!-- ============ NAVBAR ============ -->
-<nav id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
-  <div id="navShell" class="mx-3 mt-3 sm:mx-6 sm:mt-4 rounded-2xl transition-all duration-300 border border-slate-200/70 dark:border-white/10 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-lg shadow-slate-900/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      <a href="../index.html" class="flex items-center gap-2.5 cursor-pointer group flex-shrink-0">
-        <img src="../assets/logo.jpg" alt="ProjectHub Logo" class="w-10 h-10 rounded-xl object-cover shadow-lg shadow-violet-500/30 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300">
-        <span class="hidden sm:inline font-extrabold text-lg tracking-tight">ProjectHub</span>
-      </a>
-
-      <!-- Right actions -->
-      <div class="flex items-center gap-1.5 ml-auto">
-        <button onclick="toggleTheme()" class="hidden sm:flex relative w-10 h-10 items-center justify-center rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-colors overflow-hidden">
-          <svg id="iconSun" class="w-5 h-5 absolute transition-all duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-          <svg id="iconMoon" class="w-5 h-5 absolute transition-all duration-500 opacity-0 scale-50 -rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
-        </button>
-
-        <a href="../index.html" class="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-xl border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-          Home
-        </a>
-      </div>
-    </div>
-  </div>
-</nav>
-
-<!-- ============ HERO COVER ============ -->
-<section class="pt-24 relative">
-  <div class="hero-shimmer max-w-7xl mx-auto px-3 sm:px-6">
-    <div id="projectCover" class="w-full h-56 sm:h-72 md:h-96 rounded-3xl overflow-hidden shadow-2xl shadow-slate-900/20 dark:shadow-black/40">
-      <img id="coverImage" src="../assets/project_ecommerce.jpg" alt="Project Cover" class="w-full h-full object-cover">
-    </div>
-  </div>
-</section>
-
-<!-- ============ PROJECT DETAIL ============ -->
-<section class="px-4 sm:px-6 lg:px-8 pb-20 relative">
-  <div class="max-w-5xl mx-auto -mt-16 relative z-10">
-
-    <!-- Main Content Card -->
-    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/30 dark:shadow-black/30 overflow-hidden reveal-detail">
-
-      <!-- Header -->
-      <div class="p-6 sm:p-10 pb-0">
-        <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
-          <div class="flex-1">
-            <!-- Category Badge -->
-            <span id="projectCategory" class="inline-block px-3.5 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-fuchsia-100 to-violet-100 dark:from-fuchsia-500/15 dark:to-violet-500/15 text-fuchsia-700 dark:text-fuchsia-300 mb-4 uppercase tracking-wider">Web</span>
-            <h1 id="projectTitle" class="text-3xl sm:text-4xl font-extrabold mb-3 tracking-tight">E-commerce Platform</h1>
-            <p id="projectDescription" class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">A modern e-commerce storefront with real-time cart updates, secure checkout, user authentication, and an admin dashboard for inventory management.</p>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex items-center gap-3 flex-shrink-0">
-            <button id="likeBtn" onclick="toggleLike()" class="like-btn flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-rose-400 hover:text-rose-500 transition-all font-bold text-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-              <span id="likeCount">124</span>
+          <!-- Right actions -->
+          <div class="flex items-center gap-1.5 ml-auto">
+            <button
+              onclick="toggleTheme()"
+              class="hidden sm:flex relative w-10 h-10 items-center justify-center rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white transition-colors overflow-hidden"
+            >
+              <svg
+                id="iconSun"
+                class="w-5 h-5 absolute transition-all duration-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path
+                  d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+                />
+              </svg>
+              <svg
+                id="iconMoon"
+                class="w-5 h-5 absolute transition-all duration-500 opacity-0 scale-50 -rotate-90"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z" />
+              </svg>
             </button>
-            <button onclick="shareProject()" class="flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:text-violet-600 dark:hover:text-violet-400 transition-all font-bold text-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-              Share
-            </button>
+
+            <a
+              href="../index.html"
+              class="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-xl border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+              Home
+            </a>
           </div>
         </div>
       </div>
+    </nav>
 
-      <!-- Author + Meta Row -->
-      <div class="px-6 sm:px-10 py-6 border-b border-slate-100 dark:border-slate-800 reveal-detail delay-1">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <div id="authorAvatar" class="w-12 h-12 rounded-full bg-gradient-to-br from-fuchsia-500 to-blue-600 flex items-center justify-center text-white font-bold shadow-lg shadow-fuchsia-500/20">AJ</div>
-            <div>
-              <p id="authorName" class="font-bold">Alex Johnson</p>
-              <p id="projectDate" class="text-sm text-slate-500 dark:text-slate-400">Published on Sep 25, 2026</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-6 text-sm text-slate-500 dark:text-slate-400">
-            <span class="flex items-center gap-1.5">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-              <span id="viewCount">1,200 views</span>
-            </span>
-            <span class="flex items-center gap-1.5">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-              <span id="commentCount">8 comments</span>
-            </span>
-          </div>
+    <!-- ============ HERO COVER ============ -->
+    <section class="pt-24 relative">
+      <div class="hero-shimmer max-w-7xl mx-auto px-3 sm:px-6">
+        <div
+          id="projectCover"
+          class="w-full h-56 sm:h-72 md:h-96 rounded-3xl overflow-hidden shadow-2xl shadow-slate-900/20 dark:shadow-black/40"
+        >
+          <img
+            id="coverImage"
+            src="../assets/project_ecommerce.jpg"
+            alt="Project Cover"
+            class="w-full h-full object-cover"
+          />
         </div>
       </div>
+    </section>
 
-      <!-- Body Content Grid -->
-      <div class="grid lg:grid-cols-3 gap-0 lg:gap-0">
-        <!-- Main Content -->
-        <div class="lg:col-span-2 p-6 sm:p-10">
-          <!-- Full Description -->
-          <div class="reveal-detail delay-2">
-            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-              <span class="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-500/15 text-violet-600 dark:text-violet-400 flex items-center justify-center text-sm">📝</span>
-              About This Project
-            </h2>
-            <div id="projectFullDescription" class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 leading-relaxed space-y-4">
-              <p>This project is a full-stack e-commerce platform designed with a focus on performance, user experience, and modern design patterns. It features real-time inventory updates, a smooth checkout flow with Stripe integration, and a comprehensive admin dashboard.</p>
-              <p>The front-end is built with React and styled using TailwindCSS for a responsive, mobile-first design. The back-end uses Node.js with Express, and MongoDB for the database layer. Authentication is handled with JWT tokens and includes social login options.</p>
-              <p>Key features include product search with filters, wishlists, order history, and real-time notifications for order status updates via WebSockets.</p>
-            </div>
-          </div>
-
-          <!-- Screenshots Gallery -->
-          <div class="mt-10 reveal-detail delay-3">
-            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-              <span class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm">📸</span>
-              Screenshots
-            </h2>
-            <div id="screenshotsGallery" class="grid grid-cols-2 gap-3">
-              <div class="rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 aspect-video hover:shadow-lg transition-shadow cursor-pointer" onclick="openLightbox(this)">
-                <img src="../assets/project_ecommerce.jpg" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Screenshot 1">
-              </div>
-              <div class="rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 aspect-video hover:shadow-lg transition-shadow cursor-pointer" onclick="openLightbox(this)">
-                <img src="../assets/project_ai.jpg" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Screenshot 2">
-              </div>
-            </div>
-          </div>
-
-          <!-- Comments Section -->
-          <div class="mt-10 reveal-detail delay-4">
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-              <span class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm">💬</span>
-              Comments
-              <span class="text-sm font-medium text-slate-400 ml-1" id="commentCountLabel">(8)</span>
-            </h2>
-            <!-- Comment Input -->
-            <div class="flex gap-3 mb-6">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">JD</div>
+    <!-- ============ PROJECT DETAIL ============ -->
+    <section class="px-4 sm:px-6 lg:px-8 pb-20 relative">
+      <div class="max-w-5xl mx-auto -mt-16 relative z-10">
+        <!-- Main Content Card -->
+        <div
+          class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-200/30 dark:shadow-black/30 overflow-hidden reveal-detail"
+        >
+          <!-- Header -->
+          <div class="p-6 sm:p-10 pb-0">
+            <div
+              class="flex flex-col md:flex-row md:items-start justify-between gap-6"
+            >
               <div class="flex-1">
-                <textarea id="commentInput" rows="3" placeholder="Write a comment..." class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-400/40 focus:border-violet-400 text-sm resize-none transition-all"></textarea>
-                <div class="flex justify-end mt-2">
-                  <button onclick="postComment()" class="px-5 py-2 rounded-xl text-white text-sm font-bold bg-gradient-to-r from-fuchsia-500 to-blue-600 shadow-md shadow-violet-500/20 hover:shadow-lg hover:-translate-y-0.5 transition-all">Post Comment</button>
+                <!-- Category Badge -->
+                <span
+                  id="projectCategory"
+                  class="inline-block px-3.5 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-fuchsia-100 to-violet-100 dark:from-fuchsia-500/15 dark:to-violet-500/15 text-fuchsia-700 dark:text-fuchsia-300 mb-4 uppercase tracking-wider"
+                  >Web</span
+                >
+                <h1
+                  id="projectTitle"
+                  class="text-3xl sm:text-4xl font-extrabold mb-3 tracking-tight"
+                >
+                  E-commerce Platform
+                </h1>
+                <p
+                  id="projectDescription"
+                  class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl"
+                >
+                  A modern e-commerce storefront with real-time cart updates,
+                  secure checkout, user authentication, and an admin dashboard
+                  for inventory management.
+                </p>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex items-center gap-3 flex-shrink-0">
+                <button
+                  id="likeBtn"
+                  onclick="toggleLike()"
+                  class="like-btn flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-rose-400 hover:text-rose-500 transition-all font-bold text-sm"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    />
+                  </svg>
+                  <span id="likeCount">124</span>
+                </button>
+                <button
+                  onclick="shareProject()"
+                  class="flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:text-violet-600 dark:hover:text-violet-400 transition-all font-bold text-sm"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                    />
+                  </svg>
+                  Share
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Author + Meta Row -->
+          <div
+            class="px-6 sm:px-10 py-6 border-b border-slate-100 dark:border-slate-800 reveal-detail delay-1"
+          >
+            <div
+              class="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            >
+              <div class="flex items-center gap-4">
+                <div
+                  id="authorAvatar"
+                  class="w-12 h-12 rounded-full bg-gradient-to-br from-fuchsia-500 to-blue-600 flex items-center justify-center text-white font-bold shadow-lg shadow-fuchsia-500/20"
+                >
+                  AJ
+                </div>
+                <div>
+                  <p id="authorName" class="font-bold">Alex Johnson</p>
+                  <p
+                    id="projectDate"
+                    class="text-sm text-slate-500 dark:text-slate-400"
+                  >
+                    Published on Sep 25, 2026
+                  </p>
+                </div>
+              </div>
+              <div
+                class="flex items-center gap-6 text-sm text-slate-500 dark:text-slate-400"
+              >
+                <span class="flex items-center gap-1.5">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                  <span id="viewCount">1,200 views</span>
+                </span>
+                <span class="flex items-center gap-1.5">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    />
+                  </svg>
+                  <span id="commentCount">8 comments</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Body Content Grid -->
+          <div class="grid lg:grid-cols-3 gap-0 lg:gap-0">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 p-6 sm:p-10">
+              <!-- Full Description -->
+              <div class="reveal-detail delay-2">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                  <span
+                    class="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-500/15 text-violet-600 dark:text-violet-400 flex items-center justify-center text-sm"
+                    >📝</span
+                  >
+                  About This Project
+                </h2>
+                <div
+                  id="projectFullDescription"
+                  class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 leading-relaxed space-y-4"
+                >
+                  <p>
+                    This project is a full-stack e-commerce platform designed
+                    with a focus on performance, user experience, and modern
+                    design patterns. It features real-time inventory updates, a
+                    smooth checkout flow with Stripe integration, and a
+                    comprehensive admin dashboard.
+                  </p>
+                  <p>
+                    The front-end is built with React and styled using
+                    TailwindCSS for a responsive, mobile-first design. The
+                    back-end uses Node.js with Express, and MongoDB for the
+                    database layer. Authentication is handled with JWT tokens
+                    and includes social login options.
+                  </p>
+                  <p>
+                    Key features include product search with filters, wishlists,
+                    order history, and real-time notifications for order status
+                    updates via WebSockets.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Screenshots Gallery -->
+              <div class="mt-10 reveal-detail delay-3">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                  <span
+                    class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm"
+                    >📸</span
+                  >
+                  Screenshots
+                </h2>
+                <div id="screenshotsGallery" class="grid grid-cols-2 gap-3">
+                  <div
+                    class="rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 aspect-video hover:shadow-lg transition-shadow cursor-pointer"
+                    onclick="openLightbox(this)"
+                  >
+                    <img
+                      src="../assets/project_ecommerce.jpg"
+                      class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      alt="Screenshot 1"
+                    />
+                  </div>
+                  <div
+                    class="rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 aspect-video hover:shadow-lg transition-shadow cursor-pointer"
+                    onclick="openLightbox(this)"
+                  >
+                    <img
+                      src="../assets/project_ai.jpg"
+                      class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      alt="Screenshot 2"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comments Section -->
+              <div class="mt-10 reveal-detail delay-4">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                  <span
+                    class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm"
+                    >💬</span
+                  >
+                  Comments
+                  <span
+                    class="text-sm font-medium text-slate-400 ml-1"
+                    id="commentCountLabel"
+                    >(8)</span
+                  >
+                </h2>
+                <!-- Comment Input -->
+                <div class="flex gap-3 mb-6">
+                  <div
+                    class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                  >
+                    JD
+                  </div>
+                  <div class="flex-1">
+                    <textarea
+                      id="commentInput"
+                      rows="3"
+                      placeholder="Write a comment..."
+                      class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-400/40 focus:border-violet-400 text-sm resize-none transition-all"
+                    ></textarea>
+                    <div class="flex justify-end mt-2">
+                      <button
+                        onclick="postComment()"
+                        class="px-5 py-2 rounded-xl text-white text-sm font-bold bg-gradient-to-r from-fuchsia-500 to-blue-600 shadow-md shadow-violet-500/20 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                      >
+                        Post Comment
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Comment List -->
+                <div id="commentList" class="space-y-4">
+                  <div
+                    class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-slate-800"
+                  >
+                    <div
+                      class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                    >
+                      SC
+                    </div>
+                    <div class="flex-1">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span class="font-bold text-sm">Sarah Chen</span
+                        ><span class="text-xs text-slate-400">2 hours ago</span>
+                      </div>
+                      <p class="text-sm text-slate-600 dark:text-slate-400">
+                        Amazing project! The Stripe integration is really well
+                        done. Would love to see a tutorial on how you handled
+                        webhooks. 🔥
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-slate-800"
+                  >
+                    <div
+                      class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                    >
+                      JW
+                    </div>
+                    <div class="flex-1">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span class="font-bold text-sm">James Wilson</span
+                        ><span class="text-xs text-slate-400">5 hours ago</span>
+                      </div>
+                      <p class="text-sm text-slate-600 dark:text-slate-400">
+                        Clean code structure and great use of React hooks. The
+                        real-time cart updates are smooth. Starred the repo! ⭐
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-slate-800"
+                  >
+                    <div
+                      class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                    >
+                      LA
+                    </div>
+                    <div class="flex-1">
+                      <div class="flex items-center gap-2 mb-1">
+                        <span class="font-bold text-sm">Lisa Anderson</span
+                        ><span class="text-xs text-slate-400">1 day ago</span>
+                      </div>
+                      <p class="text-sm text-slate-600 dark:text-slate-400">
+                        The admin dashboard is super intuitive. Could you add
+                        dark mode to the admin panel too? That would be perfect.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <!-- Comment List -->
-            <div id="commentList" class="space-y-4">
-              <div class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-slate-800">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">SC</div>
-                <div class="flex-1">
-                  <div class="flex items-center gap-2 mb-1"><span class="font-bold text-sm">Sarah Chen</span><span class="text-xs text-slate-400">2 hours ago</span></div>
-                  <p class="text-sm text-slate-600 dark:text-slate-400">Amazing project! The Stripe integration is really well done. Would love to see a tutorial on how you handled webhooks. 🔥</p>
+
+            <!-- Sidebar -->
+            <div
+              class="lg:col-span-1 p-6 sm:p-8 lg:border-l border-t lg:border-t-0 border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-white/[0.02]"
+            >
+              <!-- Technologies -->
+              <div class="mb-8 reveal-detail delay-2">
+                <h3
+                  class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3"
+                >
+                  Technologies
+                </h3>
+                <div id="techStack" class="flex flex-wrap gap-2">
+                  <span
+                    class="px-3 py-1.5 rounded-xl text-sm font-bold bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300"
+                    >React</span
+                  >
+                  <span
+                    class="px-3 py-1.5 rounded-xl text-sm font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
+                    >Node.js</span
+                  >
+                  <span
+                    class="px-3 py-1.5 rounded-xl text-sm font-bold bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300"
+                    >MongoDB</span
+                  >
+                  <span
+                    class="px-3 py-1.5 rounded-xl text-sm font-bold bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300"
+                    >Stripe</span
+                  >
                 </div>
               </div>
-              <div class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-slate-800">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">JW</div>
-                <div class="flex-1">
-                  <div class="flex items-center gap-2 mb-1"><span class="font-bold text-sm">James Wilson</span><span class="text-xs text-slate-400">5 hours ago</span></div>
-                  <p class="text-sm text-slate-600 dark:text-slate-400">Clean code structure and great use of React hooks. The real-time cart updates are smooth. Starred the repo! ⭐</p>
+
+              <!-- Links -->
+              <div class="mb-8 reveal-detail delay-3">
+                <h3
+                  class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3"
+                >
+                  Links
+                </h3>
+                <div class="space-y-2">
+                  <a
+                    id="liveLink"
+                    href="#"
+                    target="_blank"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:shadow-md transition-all group"
+                  >
+                    <div
+                      class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="font-bold text-sm">Live Demo</p>
+                      <p class="text-xs text-slate-400">
+                        View the live project
+                      </p>
+                    </div>
+                  </a>
+                  <a
+                    id="githubLink"
+                    href="#"
+                    target="_blank"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:shadow-md transition-all group"
+                  >
+                    <div
+                      class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-400 flex items-center justify-center group-hover:scale-110 transition-transform"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="font-bold text-sm">GitHub Repo</p>
+                      <p class="text-xs text-slate-400">View source code</p>
+                    </div>
+                  </a>
                 </div>
               </div>
-              <div class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-slate-800">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">LA</div>
-                <div class="flex-1">
-                  <div class="flex items-center gap-2 mb-1"><span class="font-bold text-sm">Lisa Anderson</span><span class="text-xs text-slate-400">1 day ago</span></div>
-                  <p class="text-sm text-slate-600 dark:text-slate-400">The admin dashboard is super intuitive. Could you add dark mode to the admin panel too? That would be perfect.</p>
+
+              <!-- Project Info -->
+              <div class="mb-8 reveal-detail delay-3">
+                <h3
+                  class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3"
+                >
+                  Project Info
+                </h3>
+                <div
+                  class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-800"
+                >
+                  <div class="px-4 py-3 flex justify-between items-center">
+                    <span class="text-sm text-slate-500">Status</span>
+                    <span
+                      class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
+                      id="projectStatus"
+                      >Published</span
+                    >
+                  </div>
+                  <div class="px-4 py-3 flex justify-between items-center">
+                    <span class="text-sm text-slate-500">Category</span>
+                    <span class="text-sm font-semibold" id="projectCategoryInfo"
+                      >Web</span
+                    >
+                  </div>
+                  <div class="px-4 py-3 flex justify-between items-center">
+                    <span class="text-sm text-slate-500">Created</span>
+                    <span class="text-sm font-semibold" id="projectCreatedDate"
+                      >Sep 25, 2026</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Related Projects -->
+              <div class="reveal-detail delay-4">
+                <h3
+                  class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3"
+                >
+                  Related Projects
+                </h3>
+                <div id="relatedProjects" class="space-y-3">
+                  <a
+                    href="#"
+                    class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-violet-400 hover:shadow-md transition-all group"
+                  >
+                    <img
+                      src="../assets/project_ai.jpg"
+                      class="w-12 h-12 rounded-lg object-cover flex-shrink-0 group-hover:scale-105 transition-transform"
+                      alt="Related Project"
+                    />
+                    <div>
+                      <p class="font-bold text-sm">AI Chat Assistant</p>
+                      <p class="text-xs text-slate-400">Python · TensorFlow</p>
+                    </div>
+                  </a>
+                  <a
+                    href="#"
+                    class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-violet-400 hover:shadow-md transition-all group"
+                  >
+                    <img
+                      src="../assets/project_design.jpg"
+                      class="w-12 h-12 rounded-lg object-cover flex-shrink-0 group-hover:scale-105 transition-transform"
+                      alt="Related Project"
+                    />
+                    <div>
+                      <p class="font-bold text-sm">Design System</p>
+                      <p class="text-xs text-slate-400">Figma · CSS</p>
+                    </div>
+                  </a>
+                  <a
+                    href="#"
+                    class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-violet-400 hover:shadow-md transition-all group"
+                  >
+                    <img
+                      src="../assets/project_thumbnail.jpg"
+                      class="w-12 h-12 rounded-lg object-cover flex-shrink-0 group-hover:scale-105 transition-transform"
+                      alt="Related Project"
+                    />
+                    <div>
+                      <p class="font-bold text-sm">Mobile App</p>
+                      <p class="text-xs text-slate-400">
+                        React Native · Firebase
+                      </p>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Sidebar -->
-        <div class="lg:col-span-1 p-6 sm:p-8 lg:border-l border-t lg:border-t-0 border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-white/[0.02]">
-          <!-- Technologies -->
-          <div class="mb-8 reveal-detail delay-2">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Technologies</h3>
-            <div id="techStack" class="flex flex-wrap gap-2">
-              <span class="px-3 py-1.5 rounded-xl text-sm font-bold bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300">React</span>
-              <span class="px-3 py-1.5 rounded-xl text-sm font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">Node.js</span>
-              <span class="px-3 py-1.5 rounded-xl text-sm font-bold bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">MongoDB</span>
-              <span class="px-3 py-1.5 rounded-xl text-sm font-bold bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300">Stripe</span>
-            </div>
-          </div>
-
-          <!-- Links -->
-          <div class="mb-8 reveal-detail delay-3">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Links</h3>
-            <div class="space-y-2">
-              <a id="liveLink" href="#" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:shadow-md transition-all group">
-                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                </div>
-                <div>
-                  <p class="font-bold text-sm">Live Demo</p>
-                  <p class="text-xs text-slate-400">View the live project</p>
-                </div>
-              </a>
-              <a id="githubLink" href="#" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:shadow-md transition-all group">
-                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-                </div>
-                <div>
-                  <p class="font-bold text-sm">GitHub Repo</p>
-                  <p class="text-xs text-slate-400">View source code</p>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          <!-- Project Info -->
-          <div class="mb-8 reveal-detail delay-3">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Project Info</h3>
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-800">
-              <div class="px-4 py-3 flex justify-between items-center">
-                <span class="text-sm text-slate-500">Status</span>
-                <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300" id="projectStatus">Published</span>
-              </div>
-              <div class="px-4 py-3 flex justify-between items-center">
-                <span class="text-sm text-slate-500">Category</span>
-                <span class="text-sm font-semibold" id="projectCategoryInfo">Web</span>
-              </div>
-              <div class="px-4 py-3 flex justify-between items-center">
-                <span class="text-sm text-slate-500">Created</span>
-                <span class="text-sm font-semibold" id="projectCreatedDate">Sep 25, 2026</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Related Projects -->
-          <div class="reveal-detail delay-4">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Related Projects</h3>
-            <div id="relatedProjects" class="space-y-3">
-              <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-violet-400 hover:shadow-md transition-all group">
-                <img src="../assets/project_ai.jpg" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 group-hover:scale-105 transition-transform" alt="Related Project">
-                <div>
-                  <p class="font-bold text-sm">AI Chat Assistant</p>
-                  <p class="text-xs text-slate-400">Python · TensorFlow</p>
-                </div>
-              </a>
-              <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-violet-400 hover:shadow-md transition-all group">
-                <img src="../assets/project_design.jpg" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 group-hover:scale-105 transition-transform" alt="Related Project">
-                <div>
-                  <p class="font-bold text-sm">Design System</p>
-                  <p class="text-xs text-slate-400">Figma · CSS</p>
-                </div>
-              </a>
-              <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-violet-400 hover:shadow-md transition-all group">
-                <img src="../assets/project_thumbnail.jpg" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 group-hover:scale-105 transition-transform" alt="Related Project">
-                <div>
-                  <p class="font-bold text-sm">Mobile App</p>
-                  <p class="text-xs text-slate-400">React Native · Firebase</p>
-                </div>
-              </a>
-            </div>
-          </div>
+        <!-- Back Button -->
+        <div class="mt-8 text-center reveal-detail delay-4">
+          <a
+            href="../index.html#projects"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:text-violet-600 dark:hover:text-violet-400 transition-all"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            Back to All Projects
+          </a>
         </div>
       </div>
+    </section>
+
+    <!-- ============ LIGHTBOX ============ -->
+    <div
+      id="lightbox"
+      class="fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm hidden items-center justify-center cursor-zoom-out"
+      onclick="closeLightbox()"
+    >
+      <img
+        id="lightboxImg"
+        src=""
+        alt="Lightbox"
+        class="max-w-[90%] max-h-[90vh] rounded-2xl shadow-2xl object-contain"
+      />
+      <button
+        class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
     </div>
 
-    <!-- Back Button -->
-    <div class="mt-8 text-center reveal-detail delay-4">
-      <a href="../index.html#projects" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold border border-slate-200 dark:border-slate-700 hover:border-violet-400 hover:text-violet-600 dark:hover:text-violet-400 transition-all">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-        Back to All Projects
-      </a>
+    <!-- TOAST -->
+    <div
+      id="toast"
+      class="fixed bottom-6 left-6 z-[90] bg-white dark:bg-slate-900 border-l-4 border-emerald-500 rounded-xl px-5 py-4 shadow-2xl opacity-0 invisible translate-y-2 transition-all"
+    >
+      <p id="toastMessage" class="text-sm font-semibold"></p>
     </div>
-  </div>
-</section>
 
-<!-- ============ LIGHTBOX ============ -->
-<div id="lightbox" class="fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm hidden items-center justify-center cursor-zoom-out" onclick="closeLightbox()">
-  <img id="lightboxImg" src="" alt="Lightbox" class="max-w-[90%] max-h-[90vh] rounded-2xl shadow-2xl object-contain">
-  <button class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
-  </button>
-</div>
+    <script>
+      /* ===== Theme ===== */
+      function toggleTheme() {
+        document.documentElement.classList.toggle("dark");
+        const dark = document.documentElement.classList.contains("dark");
+        localStorage.setItem("theme", dark ? "dark" : "light");
+        document.getElementById("iconSun").style.opacity = dark ? "0" : "1";
+        document.getElementById("iconSun").style.transform = dark
+          ? "rotate(-90deg) scale(.5)"
+          : "rotate(0) scale(1)";
+        document.getElementById("iconMoon").style.opacity = dark ? "1" : "0";
+        document.getElementById("iconMoon").style.transform = dark
+          ? "rotate(0) scale(1)"
+          : "rotate(90deg) scale(.5)";
+      }
+      if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.classList.add("dark");
+        document.getElementById("iconSun").style.opacity = "0";
+        document.getElementById("iconMoon").style.opacity = "1";
+        document.getElementById("iconMoon").style.transform =
+          "rotate(0) scale(1)";
+      }
 
-<!-- TOAST -->
-<div id="toast" class="fixed bottom-6 left-6 z-[90] bg-white dark:bg-slate-900 border-l-4 border-emerald-500 rounded-xl px-5 py-4 shadow-2xl opacity-0 invisible translate-y-2 transition-all">
-  <p id="toastMessage" class="text-sm font-semibold"></p>
-</div>
+      /* ===== Dropdown Panel ===== */
+      function togglePanel(id) {
+        const panel = document.getElementById(id);
+        const open = !panel.classList.contains("hidden");
+        document
+          .querySelectorAll("#profilePanel")
+          .forEach((p) => p.classList.add("hidden"));
+        if (!open) panel.classList.remove("hidden");
+      }
 
-<script>
-/* ===== Theme ===== */
-function toggleTheme(){
-  document.documentElement.classList.toggle('dark');
-  const dark=document.documentElement.classList.contains('dark');
-  localStorage.setItem('theme',dark?'dark':'light');
-  document.getElementById('iconSun').style.opacity=dark?'0':'1';
-  document.getElementById('iconSun').style.transform=dark?'rotate(-90deg) scale(.5)':'rotate(0) scale(1)';
-  document.getElementById('iconMoon').style.opacity=dark?'1':'0';
-  document.getElementById('iconMoon').style.transform=dark?'rotate(0) scale(1)':'rotate(90deg) scale(.5)';
-}
-if(localStorage.getItem('theme')==='dark'){document.documentElement.classList.add('dark');document.getElementById('iconSun').style.opacity='0';document.getElementById('iconMoon').style.opacity='1';document.getElementById('iconMoon').style.transform='rotate(0) scale(1)';}
+      /* ===== Toast ===== */
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        document.getElementById("toastMessage").textContent = msg;
+        t.classList.remove("opacity-0", "invisible", "translate-y-2");
+        setTimeout(
+          () => t.classList.add("opacity-0", "invisible", "translate-y-2"),
+          3000,
+        );
+      }
 
-/* ===== Dropdown Panel ===== */
-function togglePanel(id){
-  const panel=document.getElementById(id);
-  const open=!panel.classList.contains('hidden');
-  document.querySelectorAll('#profilePanel').forEach(p=>p.classList.add('hidden'));
-  if(!open) panel.classList.remove('hidden');
-}
+      /* ===== Like ===== */
+      function toggleLike() {
+        const btn = document.getElementById("likeBtn");
+        const countEl = document.getElementById("likeCount");
+        let count = parseInt(countEl.textContent);
+        if (btn.classList.contains("liked")) {
+          btn.classList.remove("liked");
+          countEl.textContent = count - 1;
+        } else {
+          btn.classList.add("liked");
+          countEl.textContent = count + 1;
+        }
+      }
 
-/* ===== Toast ===== */
-function showToast(msg){
-  const t=document.getElementById('toast');
-  document.getElementById('toastMessage').textContent=msg;
-  t.classList.remove('opacity-0','invisible','translate-y-2');
-  setTimeout(()=>t.classList.add('opacity-0','invisible','translate-y-2'),3000);
-}
+      /* ===== Share ===== */
+      function shareProject() {
+        navigator.clipboard
+          .writeText(window.location.href)
+          .then(() => {
+            showToast("Link copied to clipboard!");
+          })
+          .catch(() => {
+            showToast("Link copied!");
+          });
+      }
 
-/* ===== Like ===== */
-function toggleLike(){
-  const btn=document.getElementById('likeBtn');
-  const countEl=document.getElementById('likeCount');
-  let count=parseInt(countEl.textContent);
-  if(btn.classList.contains('liked')){
-    btn.classList.remove('liked');
-    countEl.textContent=count-1;
-  } else {
-    btn.classList.add('liked');
-    countEl.textContent=count+1;
-  }
-}
+      /* ===== Lightbox ===== */
+      function openLightbox(el) {
+        const img = el.querySelector("img");
+        document.getElementById("lightboxImg").src = img.src;
+        const lb = document.getElementById("lightbox");
+        lb.classList.remove("hidden");
+        lb.classList.add("flex");
+      }
+      function closeLightbox() {
+        const lb = document.getElementById("lightbox");
+        lb.classList.add("hidden");
+        lb.classList.remove("flex");
+      }
 
-/* ===== Share ===== */
-function shareProject(){
-  navigator.clipboard.writeText(window.location.href).then(()=>{
-    showToast('Link copied to clipboard!');
-  }).catch(()=>{
-    showToast('Link copied!');
-  });
-}
-
-/* ===== Lightbox ===== */
-function openLightbox(el){
-  const img=el.querySelector('img');
-  document.getElementById('lightboxImg').src=img.src;
-  const lb=document.getElementById('lightbox');
-  lb.classList.remove('hidden'); lb.classList.add('flex');
-}
-function closeLightbox(){
-  const lb=document.getElementById('lightbox');
-  lb.classList.add('hidden'); lb.classList.remove('flex');
-}
-
-/* ===== Post Comment ===== */
-function postComment(){
-  const input=document.getElementById('commentInput');
-  const text=input.value.trim();
-  if(!text) return;
-  const list=document.getElementById('commentList');
-  const now=new Date();
-  const timeStr='Just now';
-  const commentHTML=`
+      /* ===== Post Comment ===== */
+      function postComment() {
+        const input = document.getElementById("commentInput");
+        const text = input.value.trim();
+        if (!text) return;
+        const list = document.getElementById("commentList");
+        const now = new Date();
+        const timeStr = "Just now";
+        const commentHTML = `
     <div class="flex gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-slate-800" style="animation: revealUp .4s ease-out forwards;">
       <div class="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">JD</div>
       <div class="flex-1">
         <div class="flex items-center gap-2 mb-1"><span class="font-bold text-sm">John Doe</span><span class="text-xs text-slate-400">${timeStr}</span></div>
-        <p class="text-sm text-slate-600 dark:text-slate-400">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+        <p class="text-sm text-slate-600 dark:text-slate-400">${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
       </div>
     </div>
   `;
-  list.insertAdjacentHTML('afterbegin', commentHTML);
-  input.value='';
-  showToast('Comment posted!');
-}
-
-/* ===== Load Project Data ===== */
-const tagColorClasses=[
-  'bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-500/15 dark:text-fuchsia-300',
-  'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300',
-  'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300',
-  'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
-  'bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300',
-  'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300',
-  'bg-pink-100 text-pink-700 dark:bg-pink-500/15 dark:text-pink-300',
-  'bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300',
-];
-
-// Default projects data (same as main page)
-const defaultProjects=[
-  {id:0,title:"E-commerce Platform",description:"Modern e-commerce with real-time updates",fullDescription:"<p>This project is a full-stack e-commerce platform designed with a focus on performance, user experience, and modern design patterns. It features real-time inventory updates, a smooth checkout flow with Stripe integration, and a comprehensive admin dashboard.</p><p>The front-end is built with React and styled using TailwindCSS for a responsive, mobile-first design. The back-end uses Node.js with Express, and MongoDB for the database layer. Authentication is handled with JWT tokens and includes social login options.</p><p>Key features include product search with filters, wishlists, order history, and real-time notifications for order status updates via WebSockets.</p>",image:"../assets/project_ecommerce.jpg",category:"web",technologies:["React","Node.js","MongoDB","Stripe"],author:"Alex Johnson",views:"1,200",likes:124,date:"Sep 25, 2026",demoUrl:"https://demo.example.com",githubUrl:"https://github.com/example/ecommerce"},
-  {id:1,title:"AI Chat Assistant",description:"Advanced conversational AI",fullDescription:"<p>An advanced conversational AI assistant built with Python and TensorFlow. The project uses a transformer-based architecture trained on a custom dataset to provide contextual, relevant responses.</p><p>Features include multi-turn conversation support, sentiment analysis, custom persona tuning, and integration with popular messaging platforms. The model can be fine-tuned on domain-specific data for specialized use cases.</p>",image:"../assets/project_ai.jpg",category:"python",technologies:["Python","TensorFlow"],author:"Sarah Chen",views:"980",likes:89,date:"Sep 20, 2026",demoUrl:"",githubUrl:"https://github.com/example/ai-chat"},
-  {id:2,title:"Design System",description:"Complete UI component library",fullDescription:"<p>A comprehensive design system and UI component library built from the ground up. Includes over 50 responsive, accessible components with detailed documentation and usage examples.</p><p>The system follows atomic design principles and includes design tokens for colors, typography, spacing, and shadows. Each component is fully customizable and supports theming.</p>",image:"../assets/project_design.jpg",category:"web",technologies:["Figma","CSS"],author:"Marcus Design",views:"750",likes:67,date:"Sep 18, 2026",demoUrl:"https://design.example.com",githubUrl:""},
-  {id:3,title:"Mobile App",description:"Cross-platform fitness tracker",fullDescription:"<p>A cross-platform mobile fitness tracking application built with React Native and Firebase. Users can track workouts, set goals, monitor progress, and compete with friends through built-in social features.</p><p>The app uses device sensors for step counting and activity recognition. Integration with health APIs provides comprehensive health data visualization.</p>",image:"../assets/project_thumbnail.jpg",category:"javascript",technologies:["React Native","Firebase"],author:"Emma Davis",views:"620",likes:54,date:"Sep 15, 2026",demoUrl:"",githubUrl:"https://github.com/example/fitness-app"},
-  {id:4,title:"Data Analytics",description:"Visualization and analytics tool",fullDescription:"<p>A powerful data visualization and analytics tool built with Python and Pandas. Features interactive charts, automated report generation, and real-time data pipeline monitoring.</p>",image:"../assets/project_thumbnail.jpg",category:"python",technologies:["Python","Pandas"],author:"James Wilson",views:"430",likes:35,date:"Sep 12, 2026",demoUrl:"",githubUrl:""},
-  {id:5,title:"API Server",description:"RESTful API with authentication",fullDescription:"<p>A production-ready RESTful API server built with Node.js, Express, and MongoDB. Features JWT authentication, rate limiting, comprehensive input validation, and auto-generated API documentation with Swagger.</p>",image:"../assets/project_thumbnail.jpg",category:"web",technologies:["Node.js","MongoDB"],author:"Lisa Anderson",views:"380",likes:28,date:"Sep 10, 2026",demoUrl:"",githubUrl:"https://github.com/example/api-server"},
-];
-
-function loadProjectDetail(){
-  const params=new URLSearchParams(window.location.search);
-  const projectId=params.get('id');
-  const source=params.get('source');
-
-  let project=null;
-
-  if(source==='user'){
-    // Load from localStorage (user-created projects)
-    const userProjects=JSON.parse(localStorage.getItem('userProjects')||'[]');
-    project=userProjects.find(p=>p.id==projectId);
-    if(project){
-      // Adjust image path for user projects
-      if(project.image && !project.image.startsWith('data:') && !project.image.startsWith('../')){
-        // It's a relative path from the root
-        project.image='../'+project.image;
+        list.insertAdjacentHTML("afterbegin", commentHTML);
+        input.value = "";
+        showToast("Comment posted!");
       }
-    }
-  } else {
-    // Load from default projects
-    project=defaultProjects.find(p=>p.id==projectId);
-  }
 
-  if(!project){
-    // fallback to first default project
-    project=defaultProjects[0];
-  }
+      /* ===== Load Project Data ===== */
+      const tagColorClasses = [
+        "bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-500/15 dark:text-fuchsia-300",
+        "bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300",
+        "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300",
+        "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300",
+        "bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300",
+        "bg-cyan-100 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300",
+        "bg-pink-100 text-pink-700 dark:bg-pink-500/15 dark:text-pink-300",
+        "bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300",
+      ];
 
-  // Populate the page
-  document.title=project.title+' — ProjectHub';
-  document.getElementById('coverImage').src=project.image||'../assets/project_thumbnail.jpg';
-  document.getElementById('projectTitle').textContent=project.title;
-  document.getElementById('projectDescription').textContent=project.description;
-  document.getElementById('projectCategory').textContent=project.category||'Web';
-  document.getElementById('projectCategoryInfo').textContent=project.category? project.category.charAt(0).toUpperCase()+project.category.slice(1):'Web';
+      // Default projects data (same as main page)
+      const defaultProjects = [
+        {
+          id: 0,
+          title: "E-commerce Platform",
+          description: "Modern e-commerce with real-time updates",
+          fullDescription:
+            "<p>This project is a full-stack e-commerce platform designed with a focus on performance, user experience, and modern design patterns. It features real-time inventory updates, a smooth checkout flow with Stripe integration, and a comprehensive admin dashboard.</p><p>The front-end is built with React and styled using TailwindCSS for a responsive, mobile-first design. The back-end uses Node.js with Express, and MongoDB for the database layer. Authentication is handled with JWT tokens and includes social login options.</p><p>Key features include product search with filters, wishlists, order history, and real-time notifications for order status updates via WebSockets.</p>",
+          image: "../assets/project_ecommerce.jpg",
+          category: "web",
+          technologies: ["React", "Node.js", "MongoDB", "Stripe"],
+          author: "Alex Johnson",
+          views: "1,200",
+          likes: 124,
+          date: "Sep 25, 2026",
+          demoUrl: "https://demo.example.com",
+          githubUrl: "https://github.com/example/ecommerce",
+        },
+        {
+          id: 1,
+          title: "AI Chat Assistant",
+          description: "Advanced conversational AI",
+          fullDescription:
+            "<p>An advanced conversational AI assistant built with Python and TensorFlow. The project uses a transformer-based architecture trained on a custom dataset to provide contextual, relevant responses.</p><p>Features include multi-turn conversation support, sentiment analysis, custom persona tuning, and integration with popular messaging platforms. The model can be fine-tuned on domain-specific data for specialized use cases.</p>",
+          image: "../assets/project_ai.jpg",
+          category: "python",
+          technologies: ["Python", "TensorFlow"],
+          author: "Sarah Chen",
+          views: "980",
+          likes: 89,
+          date: "Sep 20, 2026",
+          demoUrl: "",
+          githubUrl: "https://github.com/example/ai-chat",
+        },
+        {
+          id: 2,
+          title: "Design System",
+          description: "Complete UI component library",
+          fullDescription:
+            "<p>A comprehensive design system and UI component library built from the ground up. Includes over 50 responsive, accessible components with detailed documentation and usage examples.</p><p>The system follows atomic design principles and includes design tokens for colors, typography, spacing, and shadows. Each component is fully customizable and supports theming.</p>",
+          image: "../assets/project_design.jpg",
+          category: "web",
+          technologies: ["Figma", "CSS"],
+          author: "Marcus Design",
+          views: "750",
+          likes: 67,
+          date: "Sep 18, 2026",
+          demoUrl: "https://design.example.com",
+          githubUrl: "",
+        },
+        {
+          id: 3,
+          title: "Mobile App",
+          description: "Cross-platform fitness tracker",
+          fullDescription:
+            "<p>A cross-platform mobile fitness tracking application built with React Native and Firebase. Users can track workouts, set goals, monitor progress, and compete with friends through built-in social features.</p><p>The app uses device sensors for step counting and activity recognition. Integration with health APIs provides comprehensive health data visualization.</p>",
+          image: "../assets/project_thumbnail.jpg",
+          category: "javascript",
+          technologies: ["React Native", "Firebase"],
+          author: "Emma Davis",
+          views: "620",
+          likes: 54,
+          date: "Sep 15, 2026",
+          demoUrl: "",
+          githubUrl: "https://github.com/example/fitness-app",
+        },
+        {
+          id: 4,
+          title: "Data Analytics",
+          description: "Visualization and analytics tool",
+          fullDescription:
+            "<p>A powerful data visualization and analytics tool built with Python and Pandas. Features interactive charts, automated report generation, and real-time data pipeline monitoring.</p>",
+          image: "../assets/project_thumbnail.jpg",
+          category: "python",
+          technologies: ["Python", "Pandas"],
+          author: "James Wilson",
+          views: "430",
+          likes: 35,
+          date: "Sep 12, 2026",
+          demoUrl: "",
+          githubUrl: "",
+        },
+        {
+          id: 5,
+          title: "API Server",
+          description: "RESTful API with authentication",
+          fullDescription:
+            "<p>A production-ready RESTful API server built with Node.js, Express, and MongoDB. Features JWT authentication, rate limiting, comprehensive input validation, and auto-generated API documentation with Swagger.</p>",
+          image: "../assets/project_thumbnail.jpg",
+          category: "web",
+          technologies: ["Node.js", "MongoDB"],
+          author: "Lisa Anderson",
+          views: "380",
+          likes: 28,
+          date: "Sep 10, 2026",
+          demoUrl: "",
+          githubUrl: "https://github.com/example/api-server",
+        },
+      ];
 
-  // Author
-  const initials=(project.author||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('authorAvatar').textContent=initials;
-  document.getElementById('authorName').textContent=project.author||'Unknown';
-  document.getElementById('projectDate').textContent='Published on '+(project.date||new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}));
-  document.getElementById('projectCreatedDate').textContent=project.date||new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      function loadProjectDetail() {
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get("id");
+        const source = params.get("source");
 
-  // Stats
-  document.getElementById('viewCount').textContent=(project.views||'0')+' views';
-  document.getElementById('likeCount').textContent=project.likes||0;
+        let project = null;
 
-  // Full Description
-  if(project.fullDescription){
-    document.getElementById('projectFullDescription').innerHTML=project.fullDescription;
-  } else {
-    document.getElementById('projectFullDescription').innerHTML='<p>'+project.description+'</p>';
-  }
+        if (source === "user") {
+          // Load from localStorage (user-created projects)
+          const userProjects = JSON.parse(
+            localStorage.getItem("userProjects") || "[]",
+          );
+          project = userProjects.find((p) => p.id == projectId);
+          if (project) {
+            // Adjust image path for user projects
+            if (
+              project.image &&
+              !project.image.startsWith("data:") &&
+              !project.image.startsWith("../")
+            ) {
+              // It's a relative path from the root
+              project.image = "../" + project.image;
+            }
+          }
+        } else {
+          // Load from default projects
+          project = defaultProjects.find((p) => p.id == projectId);
+        }
 
-  // Tech Stack
-  const techContainer=document.getElementById('techStack');
-  if(project.technologies && project.technologies.length>0){
-    techContainer.innerHTML=project.technologies.map((t,i)=>`<span class="px-3 py-1.5 rounded-xl text-sm font-bold ${tagColorClasses[i%tagColorClasses.length]}">${t}</span>`).join('');
-  }
+        if (!project) {
+          // fallback to first default project
+          project = defaultProjects[0];
+        }
 
-  // Links
-  const liveLink=document.getElementById('liveLink');
-  const githubLink=document.getElementById('githubLink');
-  if(project.demoUrl){
-    liveLink.href=project.demoUrl;
-  } else {
-    liveLink.style.opacity='0.4';
-    liveLink.style.pointerEvents='none';
-  }
-  if(project.githubUrl){
-    githubLink.href=project.githubUrl;
-  } else {
-    githubLink.style.opacity='0.4';
-    githubLink.style.pointerEvents='none';
-  }
+        // Populate the page
+        document.title = project.title + " — ProjectHub";
+        document.getElementById("coverImage").src =
+          project.image || "../assets/project_thumbnail.jpg";
+        document.getElementById("projectTitle").textContent = project.title;
+        document.getElementById("projectDescription").textContent =
+          project.description;
+        document.getElementById("projectCategory").textContent =
+          project.category || "Web";
+        document.getElementById("projectCategoryInfo").textContent =
+          project.category
+            ? project.category.charAt(0).toUpperCase() +
+              project.category.slice(1)
+            : "Web";
 
-  // Screenshots Gallery — use cover image + any existing assets
-  const gallery=document.getElementById('screenshotsGallery');
-  gallery.innerHTML=`
+        // Author
+        const initials = (project.author || "U")
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .toUpperCase()
+          .slice(0, 2);
+        document.getElementById("authorAvatar").textContent = initials;
+        document.getElementById("authorName").textContent =
+          project.author || "Unknown";
+        document.getElementById("projectDate").textContent =
+          "Published on " +
+          (project.date ||
+            new Date().toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }));
+        document.getElementById("projectCreatedDate").textContent =
+          project.date ||
+          new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          });
+
+        // Stats
+        document.getElementById("viewCount").textContent =
+          (project.views || "0") + " views";
+        document.getElementById("likeCount").textContent = project.likes || 0;
+
+        // Full Description
+        if (project.fullDescription) {
+          document.getElementById("projectFullDescription").innerHTML =
+            project.fullDescription;
+        } else {
+          document.getElementById("projectFullDescription").innerHTML =
+            "<p>" + project.description + "</p>";
+        }
+
+        // Tech Stack
+        const techContainer = document.getElementById("techStack");
+        if (project.technologies && project.technologies.length > 0) {
+          techContainer.innerHTML = project.technologies
+            .map(
+              (t, i) =>
+                `<span class="px-3 py-1.5 rounded-xl text-sm font-bold ${tagColorClasses[i % tagColorClasses.length]}">${t}</span>`,
+            )
+            .join("");
+        }
+
+        // Links
+        const liveLink = document.getElementById("liveLink");
+        const githubLink = document.getElementById("githubLink");
+        if (project.demoUrl) {
+          liveLink.href = project.demoUrl;
+        } else {
+          liveLink.style.opacity = "0.4";
+          liveLink.style.pointerEvents = "none";
+        }
+        if (project.githubUrl) {
+          githubLink.href = project.githubUrl;
+        } else {
+          githubLink.style.opacity = "0.4";
+          githubLink.style.pointerEvents = "none";
+        }
+
+        // Screenshots Gallery — use cover image + any existing assets
+        const gallery = document.getElementById("screenshotsGallery");
+        gallery.innerHTML = `
     <div class="rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 aspect-video hover:shadow-lg transition-shadow cursor-pointer" onclick="openLightbox(this)">
-      <img src="${project.image||'../assets/project_thumbnail.jpg'}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Screenshot">
+      <img src="${project.image || "../assets/project_thumbnail.jpg"}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Screenshot">
     </div>
   `;
 
-  // Related Projects — exclude current
-  const related=defaultProjects.filter(p=>p.id!=projectId).slice(0,3);
-  const relatedContainer=document.getElementById('relatedProjects');
-  relatedContainer.innerHTML=related.map(r=>`
+        // Related Projects — exclude current
+        const related = defaultProjects
+          .filter((p) => p.id != projectId)
+          .slice(0, 3);
+        const relatedContainer = document.getElementById("relatedProjects");
+        relatedContainer.innerHTML = related
+          .map(
+            (r) => `
     <a href="project-detail.html?id=${r.id}" class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:border-violet-400 hover:shadow-md transition-all group">
       <img src="${r.image}" class="w-12 h-12 rounded-lg object-cover flex-shrink-0 group-hover:scale-105 transition-transform" alt="${r.title}">
       <div>
         <p class="font-bold text-sm">${r.title}</p>
-        <p class="text-xs text-slate-400">${r.technologies.join(' · ')}</p>
+        <p class="text-xs text-slate-400">${r.technologies.join(" · ")}</p>
       </div>
     </a>
-  `).join('');
-}
+  `,
+          )
+          .join("");
+      }
 
-document.addEventListener('DOMContentLoaded', loadProjectDetail);
+      document.addEventListener("DOMContentLoaded", loadProjectDetail);
 
-/* ESC to close lightbox */
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape') closeLightbox();
-});
-</script>
-</body>
+      /* ESC to close lightbox */
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeLightbox();
+      });
+    </script>
+  </body>
 </html>
+
